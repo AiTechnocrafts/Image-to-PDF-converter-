@@ -1,495 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to PDF Converter</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Free Image to PDF Converter | Convert JPG, PNG to PDF Online</title>
+    <meta name="description" content="Easily convert your images (JPG, PNG, etc.) to a single PDF file for free. Our online tool is fast, secure, and requires no registration. Customize page size, orientation, and margins.">
+    <meta name="keywords" content="image to pdf, convert jpg to pdf, png to pdf, photo to pdf, free pdf converter, online tool, image converter">
+    <meta name="author" content="aitechnocrafts">
+    <link rel="canonical" href="https://aitechnocrafts.github.io/">
+
+    <!-- Open Graph Meta Tags (for Social Media Sharing) -->
+    <meta property="og:title" content="Free Image to PDF Converter Online">
+    <meta property="og:description" content="Convert multiple images to a single, high-quality PDF file instantly and for free.">
+    <meta property="og:image" content="https://aitechnocrafts.github.io/og-image.png"> <!-- Ek 1200x630px ki image banakar 'og-image.png' naam se upload karein -->
+    <meta property="og:url" content="https://aitechnocrafts.github.io/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Image to PDF Converter Online">
+    <meta name="twitter:description" content="Convert multiple images to a single, high-quality PDF file instantly and for free.">
+    <meta name="twitter:image" content="https://aitechnocrafts.github.io/og-image.png"> <!-- Wahi image yahan bhi kaam aayegi -->
+
+    <!-- Favicon 📄 -->
+    <!-- Aap https://www.favicon-generator.org/ jaise tool se favicon bana sakte hain aur neeche diye gaye link tags use kar sakte hain -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     
     <!-- JavaScript PDF Library (jsPDF) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* --- CSS Code Starts Here --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        /* ... aapka purana CSS code yahan rahega ... */
 
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #333;
-            --border-color: #dee2e6;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
+        /* Ad Space CSS (Naya CSS) */
+        .ad-space {
             width: 100%;
-            max-width: 800px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-
-        main {
-            padding: 25px;
-        }
-
-        .upload-area {
-            border: 3px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .upload-area.drag-over {
-            border-color: var(--primary-color);
-            background-color: #e9f3ff;
-        }
-
-        .upload-area .icon {
-            font-size: 40px;
-            color: var(--primary-color);
-        }
-
-        .upload-area p {
-            margin-top: 15px;
-            font-size: 1.1em;
-            color: var(--secondary-color);
-        }
-        
-        #file-input {
-            display: none;
-        }
-
-        #image-preview-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .image-preview {
-            position: relative;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .image-preview img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: rgba(220, 53, 69, 0.8);
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
+            min-height: 90px;
+            background-color: #f0f0f0;
+            border: 1px dashed var(--border-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.2s;
-        }
-
-        .remove-btn:hover {
-            background-color: var(--danger-color);
-        }
-        
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .option-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .option-group label {
-            font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-
-        .option-group select, .option-group input {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1em;
-        }
-
-        .convert-btn-container {
-            text-align: center;
-            position: relative;
-        }
-        
-        #convert-btn {
-            background-color: var(--success-color);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        #convert-btn:disabled {
-            background-color: var(--secondary-color);
-            cursor: not-allowed;
-        }
-        
-        #convert-btn:not(:disabled):hover {
-            background-color: #218838;
-        }
-
-        #loader {
-            display: none;
-            margin-top: 15px;
-            font-size: 1em;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 15px;
-            font-size: 0.9em;
             color: var(--secondary-color);
-            border-top: 1px solid var(--border-color);
-            margin-top: 25px;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            main {
-                padding: 15px;
-            }
-            .upload-area {
-                padding: 25px;
-            }
-             header h1 {
-                font-size: 1.5em;
-            }
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+            font-size: 0.9em;
+            margin: 25px 0;
+            border-radius: 8px;
         }
     </style>
 </head>
-<body>
-
-    <div class="container">
-        <header>
-            <h1>Image to PDF Converter</h1>
-        </header>
-        <main>
-            <!-- File Upload Area -->
-            <div class="upload-area" id="upload-area">
-                <input type="file" id="file-input" multiple accept="image/*">
-                <div class="icon">🖼️</div>
-                <p>Drag & Drop images here, or <strong>click to select files</strong></p>
-            </div>
-
-            <!-- Image Previews -->
-            <div id="image-preview-container">
-                <!-- Image previews will be dynamically inserted here -->
-            </div>
-
-            <!-- PDF Options -->
-            <div class="options-grid">
-                <div class="option-group">
-                    <label for="page-size">Page Size</label>
-                    <select id="page-size">
-                        <option value="a4" selected>A4</option>
-                        <option value="a3">A3</option>
-                        <option value="a5">A5</option>
-                        <option value="letter">Letter</option>
-                        <option value="legal">Legal</option>
-                    </select>
-                </div>
-                <div class="option-group">
-                    <label for="page-orientation">Orientation</label>
-                    <select id="page-orientation">
-                        <option value="portrait" selected>Portrait</option>
-                        <option value="landscape">Landscape</option>
-                    </select>
-                </div>
-                <div class="option-group">
-                    <label for="image-fit">Image Fit</label>
-                    <select id="image-fit">
-                        <option value="contain" selected>Contain (Fit on page)</option>
-                        <option value="cover">Cover (Fill page)</option>
-                    </select>
-                </div>
-                <div class="option-group">
-                    <label for="margin-size">Margin (mm)</label>
-                    <input type="number" id="margin-size" value="10" min="0">
-                </div>
-            </div>
-
-            <!-- Convert Button -->
-            <div class="convert-btn-container">
-                <button id="convert-btn" disabled>Convert to PDF</button>
-                <div id="loader">Processing... Please wait.</div>
-            </div>
-        </main>
-        <footer>
-            <p>Made with ❤️ for easy PDF conversion.</p>
-        </footer>
-    </div>
-
-    <script>
-    // --- JavaScript Code Starts Here ---
-    document.addEventListener('DOMContentLoaded', () => {
-        // Import jsPDF from the global window object
-        const { jsPDF } = window.jspdf;
-        
-        // DOM Elements
-        const uploadArea = document.getElementById('upload-area');
-        const fileInput = document.getElementById('file-input');
-        const previewContainer = document.getElementById('image-preview-container');
-        const convertBtn = document.getElementById('convert-btn');
-        const loader = document.getElementById('loader');
-        
-        // Options
-        const pageSizeSelect = document.getElementById('page-size');
-        const pageOrientationSelect = document.getElementById('page-orientation');
-        const imageFitSelect = document.getElementById('image-fit');
-        const marginInput = document.getElementById('margin-size');
-
-        let uploadedImages = []; // Array to store image data and id
-
-        // --- Event Listeners ---
-
-        // Trigger file input click when upload area is clicked
-        uploadArea.addEventListener('click', () => fileInput.click());
-
-        // Handle file selection
-        fileInput.addEventListener('change', handleFiles);
-
-        // Drag and Drop functionality
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('drag-over');
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('drag-over');
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                fileInput.files = files;
-                handleFiles({ target: fileInput });
-            }
-        });
-
-        // Handle image removal using event delegation
-        previewContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-btn')) {
-                const previewElement = e.target.parentElement;
-                const imageId = previewElement.getAttribute('data-id');
-                removeImage(imageId, previewElement);
-            }
-        });
-        
-        // Convert button click
-        convertBtn.addEventListener('click', convertToPdf);
-
-        // --- Functions ---
-
-        function handleFiles(event) {
-            const files = event.target.files;
-            for (const file of files) {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const imageData = e.target.result;
-                        const imageId = 'img-' + Date.now() + '-' + Math.random();
-                        uploadedImages.push({ id: imageId, data: imageData, file: file });
-                        displayImagePreview(imageData, imageId);
-                        updateConvertButtonState();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        }
-
-        function displayImagePreview(imageData, imageId) {
-            const previewElement = document.createElement('div');
-            previewElement.classList.add('image-preview');
-            previewElement.setAttribute('data-id', imageId);
-            
-            const img = document.createElement('img');
-            img.src = imageData;
-            
-            const removeBtn = document.createElement('button');
-            removeBtn.classList.add('remove-btn');
-            removeBtn.innerHTML = '×';
-            
-            previewElement.appendChild(img);
-            previewElement.appendChild(removeBtn);
-            previewContainer.appendChild(previewElement);
-        }
-
-        function removeImage(imageId, element) {
-            // Remove from array
-            uploadedImages = uploadedImages.filter(img => img.id !== imageId);
-            // Remove from DOM
-            element.remove();
-            updateConvertButtonState();
-        }
-
-        function updateConvertButtonState() {
-            convertBtn.disabled = uploadedImages.length === 0;
-        }
-        
-        async function convertToPdf() {
-            if (uploadedImages.length === 0) {
-                alert('Please upload at least one image.');
-                return;
-            }
-
-            // Show loader and disable button
-            loader.style.display = 'block';
-            convertBtn.disabled = true;
-            convertBtn.textContent = 'Converting...';
-
-            try {
-                const options = {
-                    orientation: pageOrientationSelect.value,
-                    unit: 'mm',
-                    format: pageSizeSelect.value
-                };
-                
-                const doc = new jsPDF(options);
-                
-                const margin = parseFloat(marginInput.value) || 0;
-                const imageFit = imageFitSelect.value;
-                
-                for (let i = 0; i < uploadedImages.length; i++) {
-                    const imgData = uploadedImages[i].data;
-                    const img = new Image();
-                    img.src = imgData;
-                    
-                    // Wait for image to load to get its dimensions
-                    await new Promise(resolve => img.onload = resolve);
-                    
-                    const pageWidth = doc.internal.pageSize.getWidth();
-                    const pageHeight = doc.internal.pageSize.getHeight();
-                    
-                    const usableWidth = pageWidth - 2 * margin;
-                    const usableHeight = pageHeight - 2 * margin;
-                    
-                    const imgWidth = img.width;
-                    const imgHeight = img.height;
-                    const aspectRatio = imgWidth / imgHeight;
-
-                    let finalWidth, finalHeight;
-                    
-                    if (imageFit === 'cover') {
-                        // Cover: fill the entire usable area, cropping if necessary
-                        if (usableWidth / usableHeight > aspectRatio) {
-                            finalWidth = usableWidth;
-                            finalHeight = usableWidth / aspectRatio;
-                        } else {
-                            finalHeight = usableHeight;
-                            finalWidth = usableHeight * aspectRatio;
-                        }
-                    } else {
-                        // Contain: fit the entire image within the usable area
-                        if (usableWidth / usableHeight > aspectRatio) {
-                            finalHeight = usableHeight;
-                            finalWidth = usableHeight * aspectRatio;
-                        } else {
-                            finalWidth = usableWidth;
-                            finalHeight = usableWidth / aspectRatio;
-                        }
-                    }
-
-                    // Center the image
-                    const x = margin + (usableWidth - finalWidth) / 2;
-                    const y = margin + (usableHeight - finalHeight) / 2;
-
-                    if (i > 0) {
-                        doc.addPage();
-                    }
-                    
-                    doc.addImage(imgData, 'JPEG', x, y, finalWidth, finalHeight);
-                }
-
-                doc.save(`converted-images-${Date.now()}.pdf`);
-
-            } catch (error) {
-                console.error('Error creating PDF:', error);
-                alert('An error occurred while creating the PDF. Please check the console for details.');
-            } finally {
-                // Hide loader and re-enable button
-                loader.style.display = 'none';
-                convertBtn.disabled = false;
-                convertBtn.textContent = 'Convert to PDF';
-            }
-        }
-    });
-    </script>
-</body>
-</html>
